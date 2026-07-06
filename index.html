@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6366f1">
+
+  <title>올인원 계산기</title>
+
+  <!-- PWA 매니페스트 및 아이콘 (상대경로: GitHub Pages 서브패스 대응) -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="계산기">
+
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 상단 헤더 -->
+    <header class="app-header">
+      <h1 class="app-title">올인원 계산기</h1>
+      <p class="app-subtitle">필요한 모든 계산을 한 곳에서</p>
+    </header>
+
+    <!-- 탭 네비게이션 (일반 · 나이 · 환율 · 퍼센트) -->
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="general" role="tab" aria-selected="true">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="3" width="16" height="18" rx="2"/>
+          <line x1="8" y1="7" x2="16" y2="7"/>
+          <line x1="8" y1="12" x2="8" y2="12"/>
+          <line x1="12" y1="12" x2="12" y2="12"/>
+          <line x1="16" y1="12" x2="16" y2="12"/>
+          <line x1="8" y1="16" x2="8" y2="16"/>
+          <line x1="12" y1="16" x2="12" y2="16"/>
+          <line x1="16" y1="16" x2="16" y2="16"/>
+        </svg>
+        <span>일반</span>
+      </button>
+      <button class="tab-btn" data-tab="age" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 11h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>
+          <path d="M4 11c0-1 1-2 2-2h12c1 0 2 1 2 2"/>
+          <path d="M9 9V6a3 3 0 0 1 6 0v3"/>
+          <line x1="8" y1="15" x2="8" y2="17"/>
+          <line x1="12" y1="15" x2="12" y2="17"/>
+          <line x1="16" y1="15" x2="16" y2="17"/>
+        </svg>
+        <span>나이</span>
+      </button>
+      <button class="tab-btn" data-tab="currency" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="9" r="5"/>
+          <circle cx="15" cy="15" r="5"/>
+        </svg>
+        <span>환율</span>
+      </button>
+      <button class="tab-btn" data-tab="percent" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <circle cx="8" cy="8" r="2"/>
+          <circle cx="16" cy="16" r="2"/>
+        </svg>
+        <span>퍼센트</span>
+      </button>
+    </nav>
+
+    <!-- =========================================================
+         [1] 일반 계산기
+    ========================================================= -->
+    <section id="tab-general" class="panel active" role="tabpanel">
+      <div class="calc-general">
+        <div class="gen-display">
+          <div class="sub" id="gen-sub"></div>
+          <div class="main" id="gen-main">0</div>
+        </div>
+        <div class="gen-keys">
+          <button class="gen-key" data-key="C">C</button>
+          <button class="gen-key" data-key="±">+/−</button>
+          <button class="gen-key" data-key="%">%</button>
+          <button class="gen-key op" data-key="/">÷</button>
+
+          <button class="gen-key" data-key="7">7</button>
+          <button class="gen-key" data-key="8">8</button>
+          <button class="gen-key" data-key="9">9</button>
+          <button class="gen-key op" data-key="*">×</button>
+
+          <button class="gen-key" data-key="4">4</button>
+          <button class="gen-key" data-key="5">5</button>
+          <button class="gen-key" data-key="6">6</button>
+          <button class="gen-key op" data-key="-">−</button>
+
+          <button class="gen-key" data-key="1">1</button>
+          <button class="gen-key" data-key="2">2</button>
+          <button class="gen-key" data-key="3">3</button>
+          <button class="gen-key op" data-key="+">+</button>
+
+          <button class="gen-key wide" data-key="0">0</button>
+          <button class="gen-key" data-key=".">.</button>
+          <button class="gen-key op" data-key="=">=</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         [2] 나이 계산기
+    ========================================================= -->
+    <section id="tab-age" class="panel" role="tabpanel">
+      <div class="calc-age">
+        <div class="age-head">
+          <span class="age-badge">✨ AGE CALCULATOR</span>
+          <h2 class="age-title">나이 계산기</h2>
+          <p class="age-desc">기준일과 적용날짜를 입력하면 연 나이·만 나이·띠를 알려드려요</p>
+        </div>
+
+        <!-- 기준일 (생년월일) -->
+        <div class="age-card blue">
+          <span class="card-label">기준일 (생년월일)</span>
+          <div class="era-toggle">
+            <button class="era-btn" data-era="bc">기원전 (BC)</button>
+            <button class="era-btn active" data-era="ad">기원후 (AD)</button>
+          </div>
+          <div class="date-inputs">
+            <div class="di">
+              <small>년</small>
+              <input type="number" id="birth-year" min="1" max="9999" inputmode="numeric">
+            </div>
+            <div class="di">
+              <small>월</small>
+              <input type="number" id="birth-month" min="1" max="12" inputmode="numeric">
+            </div>
+            <div class="di">
+              <small>일</small>
+              <input type="number" id="birth-day" min="1" max="31" inputmode="numeric">
+            </div>
+          </div>
+          <p class="date-summary" id="birth-summary"></p>
+        </div>
+
+        <!-- 적용날짜 -->
+        <div class="age-card green">
+          <span class="card-label">적용날짜</span>
+          <div class="date-inputs">
+            <div class="di">
+              <small>년</small>
+              <input type="number" id="apply-year" min="1" max="9999" inputmode="numeric">
+            </div>
+            <div class="di">
+              <small>월</small>
+              <input type="number" id="apply-month" min="1" max="12" inputmode="numeric">
+            </div>
+            <div class="di">
+              <small>일</small>
+              <input type="number" id="apply-day" min="1" max="31" inputmode="numeric">
+            </div>
+          </div>
+          <p class="date-summary" id="apply-summary"></p>
+        </div>
+
+        <!-- 결과 -->
+        <div class="result-card">
+          <span class="card-label">결과</span>
+          <div class="result-grid">
+            <div class="cell">
+              <span class="lbl">연 나이</span>
+              <div class="val" id="res-yearly">-</div>
+              <span class="sub">해당연도 − 출생연도</span>
+            </div>
+            <div class="cell">
+              <span class="lbl">만 나이</span>
+              <div class="val" id="res-real">-</div>
+              <span class="sub">국제 표준 나이</span>
+            </div>
+            <div class="cell">
+              <span class="lbl">띠</span>
+              <div class="zodiac-emoji" id="res-zodiac-emoji">-</div>
+              <div class="val" style="font-size:15px;" id="res-zodiac-name">-</div>
+              <span class="sub" id="res-zodiac-sub">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 역산: 나이로 출생년도 찾기 -->
+        <div class="age-card purple reverse-card">
+          <span class="card-label">🔍 나이로 출생년도 찾기</span>
+          <div class="age-type-toggle">
+            <button class="age-type-btn active" data-type="yearly">연 나이</button>
+            <button class="age-type-btn" data-type="real">만 나이</button>
+          </div>
+          <div class="age-input-box">
+            <input type="number" id="rev-age" min="0" max="200" inputmode="numeric">
+            <span class="suffix">세</span>
+          </div>
+          <div class="reverse-result">
+            <span class="lbl" id="rev-birth-label">출생년도</span>
+            <div class="val" id="rev-birth-year">-</div>
+            <div class="zd" id="rev-zodiac">-</div>
+          </div>
+        </div>
+
+        <p class="age-note">입력칸에 직접 숫자를 적거나 변경할 수 있어요.</p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         [3] 환율 계산기
+    ========================================================= -->
+    <section id="tab-currency" class="panel" role="tabpanel">
+      <div class="calc-currency">
+        <div class="cur-header">
+          <span class="cur-badge">실시간 환율</span>
+          <h2 class="cur-title">환율 계산기</h2>
+          <p class="cur-desc">세계 주요 통화를 대한민국 원화(KRW)로 환산합니다</p>
+          <button class="cur-refresh" id="cur-refresh" aria-label="새로고침">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-3-6.7"/>
+              <polyline points="21 4 21 10 15 10"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="cur-field">
+          <label>기준 통화</label>
+          <div class="cur-select-wrap">
+            <select class="cur-select" id="cur-select"></select>
+            <span class="cur-select-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="cur-field">
+          <label id="cur-amount-label">USD 금액 입력</label>
+          <div class="cur-amount" id="cur-amount">
+            0<span class="unit" id="cur-amount-unit">USD</span>
+          </div>
+        </div>
+
+        <div class="cur-arrow">
+          <span class="a">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <polyline points="19 12 12 19 5 12"/>
+            </svg>
+          </span>
+        </div>
+
+        <div class="cur-result">
+          <div class="cur-result-head">
+            <span class="name">🇰🇷 대한민국 원</span>
+            <span class="code">KRW</span>
+          </div>
+          <div class="cur-result-value" id="cur-result-value">
+            <span id="cur-result-num">0</span><span class="unit">₩</span>
+          </div>
+          <div class="cur-result-info">
+            <span id="cur-result-rate">환율 정보를 불러오는 중…</span>
+            <span id="cur-result-time"></span>
+          </div>
+        </div>
+
+        <div class="cur-keys">
+          <button class="cur-key" data-key="7">7</button>
+          <button class="cur-key" data-key="8">8</button>
+          <button class="cur-key" data-key="9">9</button>
+          <button class="cur-key accent" data-key="C">C</button>
+
+          <button class="cur-key" data-key="4">4</button>
+          <button class="cur-key" data-key="5">5</button>
+          <button class="cur-key" data-key="6">6</button>
+          <button class="cur-key accent" data-key="BS" aria-label="지우기">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 4H8L1 12l7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+              <line x1="18" y1="9" x2="12" y2="15"/>
+              <line x1="12" y1="9" x2="18" y2="15"/>
+            </svg>
+          </button>
+
+          <button class="cur-key" data-key="1">1</button>
+          <button class="cur-key" data-key="2">2</button>
+          <button class="cur-key" data-key="3">3</button>
+          <button class="cur-key accent" data-key="000">000</button>
+
+          <button class="cur-key" data-key="0">0</button>
+          <button class="cur-key accent" data-key="00">00</button>
+          <button class="cur-key" data-key=".">.</button>
+          <button class="cur-key" data-key="BS" aria-label="한 칸 지우기">⌫</button>
+        </div>
+
+        <p class="cur-note" id="cur-note">데이터: open.er-api.com · 참고용으로만 사용하세요</p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         [4] 퍼센트 계산기
+    ========================================================= -->
+    <section id="tab-percent" class="panel" role="tabpanel">
+      <div class="calc-percent">
+        <div class="pct-inner">
+          <h2 class="pct-title">퍼센트 계산기</h2>
+
+          <div class="pct-field">
+            <label for="pct-base">기준 금액</label>
+            <input type="text" id="pct-base" placeholder="예: 3,000,000" inputmode="decimal" autocomplete="off">
+          </div>
+
+          <div class="pct-field">
+            <label for="pct-rate">퍼센트 (%)</label>
+            <input type="text" id="pct-rate" placeholder="예: 15" inputmode="decimal" autocomplete="off">
+          </div>
+
+          <div class="pct-results">
+            <div class="pct-result g">
+              <div>
+                <span class="r-label">퍼센트 결과값</span>
+                <span class="r-sub" id="pct-res-sub">? × ?%</span>
+              </div>
+              <div class="r-value" id="pct-res-value">-</div>
+            </div>
+            <div class="pct-result b">
+              <div>
+                <span class="r-label">기준 금액 + 결과값</span>
+                <span class="r-sub">할증 / 부가 적용</span>
+              </div>
+              <div class="r-value" id="pct-add-value">-</div>
+            </div>
+            <div class="pct-result r">
+              <div>
+                <span class="r-label">기준 금액 − 결과값</span>
+                <span class="r-sub">할인 적용</span>
+              </div>
+              <div class="r-value" id="pct-sub-value">-</div>
+            </div>
+          </div>
+
+          <div class="pct-keys">
+            <button class="pct-key" data-key="1">1</button>
+            <button class="pct-key" data-key="2">2</button>
+            <button class="pct-key" data-key="3">3</button>
+            <button class="pct-key clear" data-key="C">C</button>
+
+            <button class="pct-key" data-key="4">4</button>
+            <button class="pct-key" data-key="5">5</button>
+            <button class="pct-key" data-key="6">6</button>
+            <button class="pct-key action" data-key="BS" aria-label="지우기">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 4H8L1 12l7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                <line x1="18" y1="9" x2="12" y2="15"/>
+                <line x1="12" y1="9" x2="18" y2="15"/>
+              </svg>
+            </button>
+
+            <button class="pct-key" data-key="7">7</button>
+            <button class="pct-key" data-key="8">8</button>
+            <button class="pct-key" data-key="9">9</button>
+            <button class="pct-key action" data-key="SW" aria-label="입력창 교환">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="7 10 12 5 17 10"/>
+                <polyline points="7 14 12 19 17 14"/>
+              </svg>
+            </button>
+
+            <button class="pct-key" data-key=".">.</button>
+            <button class="pct-key" data-key="0">0</button>
+            <button class="pct-key" data-key="000">000</button>
+            <button class="pct-key" data-key="00">00</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 스크립트 로드 (모든 DOM 뒤) -->
+  <script src="./app.js"></script>
+</body>
+</html>

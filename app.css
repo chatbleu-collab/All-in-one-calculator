@@ -1,0 +1,708 @@
+/* ============================================================
+   올인원 계산기 - 스타일시트
+   탭별 테마:
+     [일반]  라이트 + 진한 남색 액센트
+     [퍼센트] 보라 그라데이션
+     [환율]  다크 + 청록
+     [나이]  라이트 + 오렌지 결과 카드
+============================================================ */
+
+/* ---------- 리셋 & 기본 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+               "Malgun Gothic", "Noto Sans KR", Roboto, sans-serif;
+  background: #f3f4f6;
+  color: #0f172a;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input { font-family: inherit; }
+button, input { outline: none; }
+
+/* ---------- 앱 컨테이너 ---------- */
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ---------- 헤더 ---------- */
+.app-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.app-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px;
+  letter-spacing: -0.5px;
+}
+.app-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ---------- 탭 네비게이션 ---------- */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: transparent;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+.tab-btn .tab-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tab-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  font-weight: 700;
+}
+.tab-btn:active { transform: scale(0.97); }
+
+/* ---------- 패널 공통 ---------- */
+.panel { display: none; animation: fadeIn 0.25s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   [1] 일반 계산기
+============================================================ */
+.calc-general {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+.gen-display {
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 32px 20px;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+.gen-display .sub {
+  font-size: 15px;
+  color: #94a3b8;
+  min-height: 18px;
+  font-weight: 400;
+  word-break: break-all;
+  text-align: right;
+  margin-bottom: 6px;
+}
+.gen-display .main {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.1;
+  word-break: break-all;
+  text-align: right;
+}
+.gen-keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.gen-key {
+  padding: 20px 0;
+  font-size: 22px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #0f172a;
+  border-radius: 14px;
+  transition: transform 0.06s ease, background 0.15s ease;
+}
+.gen-key:active { transform: scale(0.96); background: #e2e8f0; }
+.gen-key.op {
+  background: #0f172a;
+  color: #ffffff;
+}
+.gen-key.op:active { background: #1e293b; }
+.gen-key.wide { grid-column: span 2; }
+
+/* ============================================================
+   [2] 퍼센트 계산기
+============================================================ */
+.calc-percent {
+  background: #6366f1;
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+}
+.pct-inner {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+}
+.pct-title {
+  color: #6366f1;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+.pct-field { margin-bottom: 14px; }
+.pct-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+.pct-field input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8fafc;
+  font-size: 17px;
+  text-align: right;
+  color: #0f172a;
+  transition: all 0.15s ease;
+}
+.pct-field input:focus {
+  border-color: #6366f1;
+  background: #eef2ff;
+}
+.pct-field input.active {
+  border-color: #6366f1;
+  background: #eef2ff;
+}
+
+.pct-results { margin: 16px 0 18px; display: flex; flex-direction: column; gap: 10px; }
+.pct-result {
+  padding: 14px 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid;
+}
+.pct-result .r-label {
+  font-size: 13px;
+  font-weight: 700;
+  display: block;
+}
+.pct-result .r-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  display: block;
+}
+.pct-result .r-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+  word-break: break-all;
+  margin-left: 12px;
+}
+.pct-result.g { background: #ecfdf5; border-color: #10b981; }
+.pct-result.g .r-label { color: #059669; }
+.pct-result.b { background: #eff6ff; border-color: #3b82f6; }
+.pct-result.b .r-label { color: #2563eb; }
+.pct-result.r { background: #fef2f2; border-color: #ef4444; }
+.pct-result.r .r-label { color: #dc2626; }
+
+.pct-keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.pct-key {
+  padding: 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  transition: transform 0.06s ease;
+}
+.pct-key:active { transform: scale(0.96); }
+.pct-key.clear { background: #ef4444; color: #ffffff; }
+.pct-key.action { background: #6366f1; color: #ffffff; }
+.pct-key svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+/* ============================================================
+   [3] 환율 계산기
+============================================================ */
+.calc-currency {
+  background: #0a0e1a;
+  border-radius: 24px;
+  padding: 22px 18px;
+  color: #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+}
+.cur-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(34, 211, 238, 0.15);
+  color: #22d3ee;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 auto 10px;
+}
+.cur-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #22d3ee;
+  border-radius: 50%;
+  animation: pulse 1.6s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.cur-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 18px;
+}
+.cur-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 4px 0 4px;
+}
+.cur-desc { font-size: 12px; color: #94a3b8; margin: 0; }
+.cur-refresh {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: rgba(34, 211, 238, 0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22d3ee;
+  transition: transform 0.4s ease;
+}
+.cur-refresh:active { transform: rotate(180deg); }
+.cur-refresh svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.cur-field { margin-bottom: 12px; }
+.cur-field label {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+.cur-select-wrap {
+  position: relative;
+}
+.cur-select {
+  width: 100%;
+  padding: 14px 16px;
+  padding-right: 40px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.6);
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.cur-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+.cur-amount {
+  padding: 18px 20px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 12px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: right;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  word-break: break-all;
+}
+.cur-amount .unit { color: #94a3b8; font-size: 15px; font-weight: 600; }
+
+.cur-arrow {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+.cur-arrow .a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.15);
+  color: #22d3ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cur-arrow svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.cur-result {
+  padding: 18px 20px;
+  background: rgba(34, 211, 238, 0.06);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+.cur-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.cur-result-head .name { color: #ffffff; font-weight: 700; font-size: 14px; }
+.cur-result-head .code { color: #22d3ee; font-weight: 700; font-size: 13px; }
+.cur-result-value {
+  text-align: right;
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 8px 0 10px;
+  word-break: break-all;
+}
+.cur-result-value .unit { color: #22d3ee; font-size: 15px; font-weight: 600; margin-left: 4px; }
+.cur-result-info {
+  display: flex;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 11px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cur-keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+.cur-key {
+  padding: 16px 0;
+  background: rgba(15, 23, 42, 0.6);
+  color: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: transform 0.06s ease;
+}
+.cur-key:active { transform: scale(0.96); background: rgba(34, 211, 238, 0.15); }
+.cur-key.accent { color: #22d3ee; border-color: rgba(34, 211, 238, 0.3); }
+.cur-key svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+.cur-note {
+  text-align: center;
+  color: #64748b;
+  font-size: 11px;
+  margin: 12px 0 0;
+}
+
+/* ============================================================
+   [4] 나이 계산기
+============================================================ */
+.calc-age { display: flex; flex-direction: column; gap: 14px; }
+
+.age-head { text-align: center; }
+.age-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.age-title { font-size: 24px; font-weight: 800; color: #0f172a; margin: 8px 0 4px; }
+.age-desc { font-size: 12px; color: #6b7280; margin: 0; }
+
+.age-card {
+  border-radius: 18px;
+  padding: 16px 18px;
+}
+.age-card.blue { background: linear-gradient(180deg, #eef2ff, #dbeafe); }
+.age-card.green { background: linear-gradient(180deg, #ecfdf5, #d1fae5); }
+.age-card.purple { background: linear-gradient(180deg, #f5f3ff, #ede9fe); }
+
+.age-card .card-label {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+.age-card.blue .card-label { background: #3b82f6; }
+.age-card.green .card-label { background: #10b981; }
+.age-card.purple .card-label { background: #8b5cf6; }
+
+.era-toggle { display: inline-flex; gap: 6px; margin-bottom: 12px; }
+.era-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+.era-btn.active { background: #3b82f6; color: #ffffff; }
+
+.date-inputs {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 8px;
+}
+.date-inputs .di {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+.date-inputs .di small {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+.date-inputs .di input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e40af;
+  padding: 4px 0;
+  -moz-appearance: textfield;
+}
+.date-inputs .di input::-webkit-outer-spin-button,
+.date-inputs .di input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.age-card.green .date-inputs .di input { color: #047857; }
+.age-card.purple .date-inputs .di input { color: #6d28d9; }
+
+.date-summary {
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 10px;
+}
+
+.result-card {
+  background: linear-gradient(135deg, #fb923c, #f97316, #ef4444);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);
+}
+.result-card .card-label {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.result-grid .cell {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+.result-grid .cell .lbl {
+  font-size: 12px;
+  opacity: 0.9;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+.result-grid .cell .val {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 2px 0;
+}
+.result-grid .cell .sub {
+  font-size: 10px;
+  opacity: 0.85;
+  display: block;
+}
+.result-grid .cell .zodiac-emoji {
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.reverse-card { padding: 18px; }
+.reverse-card .card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.age-type-toggle { display: inline-flex; gap: 6px; margin-bottom: 12px; }
+.age-type-btn {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+.age-type-btn.active { background: #8b5cf6; color: #ffffff; }
+
+.age-input-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.age-input-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #6d28d9;
+  padding: 6px 0;
+  -moz-appearance: textfield;
+}
+.age-input-box input::-webkit-outer-spin-button,
+.age-input-box input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.age-input-box .suffix { color: #6b7280; font-size: 14px; font-weight: 600; }
+
+.reverse-result {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.reverse-result .lbl { display: block; font-size: 11px; color: #6b7280; margin-bottom: 2px; }
+.reverse-result .val { font-size: 26px; font-weight: 800; color: #6d28d9; }
+.reverse-result .zd { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+.age-note {
+  text-align: center;
+  font-size: 11px;
+  color: #6b7280;
+  margin: 6px 0 0;
+}
+
+/* ---------- 반응형 ---------- */
+@media (max-width: 380px) {
+  .app-title { font-size: 22px; }
+  .gen-display .main { font-size: 36px; }
+  .cur-amount, .cur-result-value { font-size: 24px; }
+  .result-grid .cell .val { font-size: 20px; }
+  .tab-btn { font-size: 12px; padding: 8px 4px; }
+  .tab-btn .tab-icon { width: 20px; height: 20px; }
+}
+@media (min-width: 720px) {
+  .app { padding-top: 40px; }
+}
+
+/* ---------- 다크 모드 시스템 대응 (헤더 배경) ---------- */
+@media (prefers-color-scheme: dark) {
+  body { background: #0f172a; }
+  .app-title { color: #f1f5f9; }
+  .app-subtitle { color: #94a3b8; }
+  .tab-btn { color: #94a3b8; }
+  .tab-btn.active { background: #1e293b; color: #f1f5f9; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .calc-general { background: #1e293b; box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+  .gen-key { background: #334155; color: #f1f5f9; }
+  .gen-key:active { background: #475569; }
+  .gen-key.op { background: #22d3ee; color: #0f172a; }
+  .gen-key.op:active { background: #67e8f9; }
+  .calc-percent { background: #4338ca; }
+  .pct-inner { background: #1e293b; }
+  .pct-title { color: #a5b4fc; }
+  .pct-field label { color: #f1f5f9; }
+  .pct-field input { background: #0f172a; color: #f1f5f9; border-color: #334155; }
+  .pct-field input:focus, .pct-field input.active { background: #1e1b4b; border-color: #6366f1; }
+  .pct-result { background: rgba(255,255,255,0.05); }
+  .pct-result.g { background: rgba(16,185,129,0.12); }
+  .pct-result.b { background: rgba(59,130,246,0.12); }
+  .pct-result.r { background: rgba(239,68,68,0.12); }
+  .pct-result .r-value { color: #f1f5f9; }
+  .pct-result .r-sub { color: #94a3b8; }
+  .pct-key { background: #334155; color: #f1f5f9; }
+  .age-title { color: #f1f5f9; }
+  .age-desc, .age-note, .date-summary { color: #94a3b8; }
+  .date-inputs .di, .age-input-box, .reverse-result { background: #1e293b; }
+  .date-inputs .di small { color: #94a3b8; }
+  .age-card.blue { background: linear-gradient(180deg, #1e293b, #1e3a8a); }
+  .age-card.green { background: linear-gradient(180deg, #1e293b, #064e3b); }
+  .age-card.purple { background: linear-gradient(180deg, #1e293b, #4c1d95); }
+  .era-btn, .age-type-btn { background: #334155; color: #cbd5e1; border-color: transparent; }
+  .date-inputs .di input,
+  .age-card.green .date-inputs .di input,
+  .age-card.purple .date-inputs .di input,
+  .age-input-box input,
+  .reverse-result .val { color: #f1f5f9; }
+  .age-input-box .suffix, .reverse-result .lbl, .reverse-result .zd { color: #94a3b8; }
+}
