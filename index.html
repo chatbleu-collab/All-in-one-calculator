@@ -126,15 +126,15 @@
           <div class="date-inputs">
             <div class="di">
               <small>년</small>
-              <input type="number" id="birth-year" min="1" max="9999" inputmode="numeric">
+              <input type="text" id="birth-year" inputmode="none" readonly>
             </div>
             <div class="di">
               <small>월</small>
-              <input type="number" id="birth-month" min="1" max="12" inputmode="numeric">
+              <input type="text" id="birth-month" inputmode="none" readonly>
             </div>
             <div class="di">
               <small>일</small>
-              <input type="number" id="birth-day" min="1" max="31" inputmode="numeric">
+              <input type="text" id="birth-day" inputmode="none" readonly>
             </div>
           </div>
           <p class="date-summary" id="birth-summary"></p>
@@ -146,15 +146,15 @@
           <div class="date-inputs">
             <div class="di">
               <small>년</small>
-              <input type="number" id="apply-year" min="1" max="9999" inputmode="numeric">
+              <input type="text" id="apply-year" inputmode="none" readonly>
             </div>
             <div class="di">
               <small>월</small>
-              <input type="number" id="apply-month" min="1" max="12" inputmode="numeric">
+              <input type="text" id="apply-month" inputmode="none" readonly>
             </div>
             <div class="di">
               <small>일</small>
-              <input type="number" id="apply-day" min="1" max="31" inputmode="numeric">
+              <input type="text" id="apply-day" inputmode="none" readonly>
             </div>
           </div>
           <p class="date-summary" id="apply-summary"></p>
@@ -191,7 +191,7 @@
             <button class="age-type-btn" data-type="real">만 나이</button>
           </div>
           <div class="age-input-box">
-            <input type="number" id="rev-age" min="0" max="200" inputmode="numeric">
+            <input type="text" id="rev-age" inputmode="none" readonly>
             <span class="suffix">세</span>
           </div>
           <div class="reverse-result">
@@ -201,7 +201,7 @@
           </div>
         </div>
 
-        <p class="age-note">입력칸에 직접 숫자를 적거나 변경할 수 있어요.</p>
+        <p class="age-note">입력칸을 누르면 앱 전용 키패드로 숫자를 입력할 수 있어요.</p>
       </div>
     </section>
 
@@ -306,12 +306,12 @@
 
           <div class="pct-field">
             <label for="pct-base">기준 금액</label>
-            <input type="text" id="pct-base" placeholder="예: 3,000,000" inputmode="decimal" autocomplete="off">
+            <input type="text" id="pct-base" placeholder="예: 3,000,000" inputmode="none" readonly autocomplete="off">
           </div>
 
           <div class="pct-field">
             <label for="pct-rate">퍼센트 (%)</label>
-            <input type="text" id="pct-rate" placeholder="예: 15" inputmode="decimal" autocomplete="off">
+            <input type="text" id="pct-rate" placeholder="예: 15" inputmode="none" readonly autocomplete="off">
           </div>
 
           <div class="pct-results">
@@ -374,6 +374,34 @@
       </div>
     </section>
 
+  </div>
+
+
+  <!-- =========================================================
+       앱 전용 숫자 키패드 (나이 계산기 입력용 하단 시트)
+       - 기기 기본 키패드는 열리지 않으며 이 키패드로만 입력합니다.
+  ========================================================= -->
+  <div class="num-pad-overlay" id="num-pad-overlay" hidden>
+    <div class="num-pad" role="dialog" aria-label="숫자 키패드">
+      <div class="num-pad-head">
+        <span class="num-pad-label" id="num-pad-label">숫자 입력</span>
+        <button class="num-pad-done" id="num-pad-done">완료</button>
+      </div>
+      <div class="num-pad-keys" id="num-pad-keys">
+        <button class="num-key" data-key="1">1</button>
+        <button class="num-key" data-key="2">2</button>
+        <button class="num-key" data-key="3">3</button>
+        <button class="num-key" data-key="4">4</button>
+        <button class="num-key" data-key="5">5</button>
+        <button class="num-key" data-key="6">6</button>
+        <button class="num-key" data-key="7">7</button>
+        <button class="num-key" data-key="8">8</button>
+        <button class="num-key" data-key="9">9</button>
+        <button class="num-key fn" data-key="C">C</button>
+        <button class="num-key" data-key="0">0</button>
+        <button class="num-key fn" data-key="BS" aria-label="한 칸 지우기">⌫</button>
+      </div>
+    </div>
   </div>
 
   <!-- 스크립트 로드 (모든 DOM 뒤) -->

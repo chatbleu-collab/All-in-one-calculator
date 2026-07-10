@@ -653,6 +653,75 @@ button, input { outline: none; }
   margin: 6px 0 0;
 }
 
+/* ============================================================
+   앱 전용 숫자 키패드 (나이 계산기 하단 시트)
+============================================================ */
+.num-pad-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.num-pad-overlay[hidden] { display: none; }
+.num-pad {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.18);
+  animation: slideUp 0.18s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.num-pad-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.num-pad-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+.num-pad-done {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #6366f1;
+  color: #ffffff;
+}
+.num-pad-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.num-key {
+  padding: 14px 0;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  transition: transform 0.06s ease;
+}
+.num-key:active { transform: scale(0.96); }
+.num-key.fn { background: #eef2ff; color: #6366f1; }
+
+/* 키패드로 편집 중인 입력칸 강조 */
+.numpad-active {
+  outline: 2px solid #6366f1;
+  outline-offset: 1px;
+  border-radius: 8px;
+}
+
 /* ---------- 반응형 ---------- */
 @media (max-width: 380px) {
   .app-title { font-size: 22px; }
@@ -705,4 +774,8 @@ button, input { outline: none; }
   .age-input-box input,
   .reverse-result .val { color: #f1f5f9; }
   .age-input-box .suffix, .reverse-result .lbl, .reverse-result .zd { color: #94a3b8; }
+  .num-pad { background: #1e293b; }
+  .num-pad-label { color: #94a3b8; }
+  .num-key { background: #334155; color: #f1f5f9; }
+  .num-key.fn { background: #312e81; color: #a5b4fc; }
 }

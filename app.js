@@ -513,6 +513,84 @@ const AgeCalc = (function () {
 })();
 
 // ============================================================
+// 5-1) 앱 전용 숫자 키패드 (나이 계산기 입력용)
+//  - 모든 숫자 입력칸은 readonly 로 기기 기본 키패드가 열리지 않으며,
+//    입력칸을 누르면 아래 하단 시트 키패드가 열립니다.
+//  - 값 변경 시 input 이벤트를 발생시켜 기존 자동 재계산 로직을 그대로 사용합니다.
+// ============================================================
+const NumPad = (function () {
+  const overlay = document.getElementById("num-pad-overlay");
+  const keysEl = document.getElementById("num-pad-keys");
+  const labelEl = document.getElementById("num-pad-label");
+  const doneBtn = document.getElementById("num-pad-done");
+
+  // 대상 입력칸: id → { 라벨, 최대 자릿수 }
+  const TARGETS = {
+    "birth-year":  { label: "기준일 · 년", max: 4 },
+    "birth-month": { label: "기준일 · 월", max: 2 },
+    "birth-day":   { label: "기준일 · 일", max: 2 },
+    "apply-year":  { label: "적용날짜 · 년", max: 4 },
+    "apply-month": { label: "적용날짜 · 월", max: 2 },
+    "apply-day":   { label: "적용날짜 · 일", max: 2 },
+    "rev-age":     { label: "나이 입력 (세)", max: 3 }
+  };
+
+  let activeInput = null; // 현재 편집 중인 입력칸
+
+  function open(input) {
+    activeInput = input;
+    labelEl.textContent = TARGETS[input.id].label;
+    document.querySelectorAll(".numpad-active").forEach((el) => el.classList.remove("numpad-active"));
+    input.classList.add("numpad-active");
+    overlay.hidden = false;
+  }
+
+  function close() {
+    if (activeInput) activeInput.classList.remove("numpad-active");
+    activeInput = null;
+    overlay.hidden = true;
+  }
+
+  function emitInput(input) {
+    // 기존 리스너(computeAge / computeReverse)가 그대로 동작하도록 input 이벤트 발생
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  // 입력칸 탭 → 키패드 열기
+  Object.keys(TARGETS).forEach((id) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener("click", () => open(input));
+    input.addEventListener("focus", () => open(input));
+  });
+
+  // 키패드 입력 처리
+  keysEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".num-key");
+    if (!btn || !activeInput) return;
+    const key = btn.dataset.key;
+    const max = TARGETS[activeInput.id].max;
+    let v = activeInput.value;
+
+    if (key === "C") v = "";
+    else if (key === "BS") v = v.slice(0, -1);
+    else if (/^[0-9]$/.test(key)) {
+      if (v.length < max) v += key;
+    }
+    activeInput.value = v;
+    emitInput(activeInput);
+  });
+
+  // 완료 버튼 / 배경 탭 → 닫기
+  doneBtn.addEventListener("click", close);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  return { open, close };
+})();
+
+// ============================================================
 // 6) 환율 계산기
 // ============================================================
 const CurrencyCalc = (function () {
@@ -721,6 +799,35 @@ const CurrencyCalc = (function () {
   let selected = "USD";
   let inputStr = "";     // 사용자가 입력한 원본 문자열 (콤마 없음)
 
+  // ---------- 로컬 저장 (선택 통화 + 환율표) ----------
+  // 앱 실행 시 저장된 값을 자동 복원하고, 통화 변경·환율 수신 시마다 갱신 저장합니다.
+  const STORAGE_KEY = "aio-calc-currency-v1";
+
+  function saveCurrencyState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        selected: selected,
+        rates: ratesUSD,
+        updatedAt: updatedAt
+      }));
+    } catch (e) { /* 저장 불가 환경(프라이빗 모드 등)은 무시 */ }
+  }
+
+  function loadCurrencyState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved && typeof saved.selected === "string" && CURRENCY_INFO[saved.selected] && saved.selected !== "KRW") {
+        selected = saved.selected;
+      }
+      if (saved && saved.rates && typeof saved.rates === "object" && typeof saved.rates.KRW === "number") {
+        ratesUSD = saved.rates;
+        updatedAt = saved.updatedAt || null;
+      }
+    } catch (e) { /* 손상된 데이터는 무시하고 기본값 사용 */ }
+  }
+
   // 통화 옵션 채우기
   CURRENCIES.forEach((c) => {
     const opt = document.createElement("option");
@@ -728,7 +835,9 @@ const CurrencyCalc = (function () {
     opt.textContent = c.flag + "  " + c.code + " · " + c.name;
     select.appendChild(opt);
   });
-  select.value = "USD";
+  // 저장된 통화·환율 복원 후 select 초기값 지정
+  loadCurrencyState();
+  select.value = selected;
 
   function updateUnitLabel() {
     unitEl.textContent = selected;
@@ -788,6 +897,7 @@ const CurrencyCalc = (function () {
       if (data && data.result === "success" && data.rates) {
         ratesUSD = data.rates;
         updatedAt = data.time_last_update_utc || new Date().toUTCString();
+        saveCurrencyState(); // 최신 환율을 로컬에 저장 (다음 실행 시 자동 복원)
         noteEl.textContent = "데이터: open.er-api.com · 참고용으로만 사용하세요";
         compute();
       } else {
@@ -802,6 +912,7 @@ const CurrencyCalc = (function () {
   // ---------- 이벤트 ----------
   select.addEventListener("change", () => {
     selected = select.value;
+    saveCurrencyState(); // 선택 통화를 로컬에 저장
     updateUnitLabel();
     compute();
   });
