@@ -674,6 +674,13 @@ button, input { outline: none; }
   padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
   box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.18);
   animation: slideUp 0.18s ease;
+  /* 뷰포트보다 커지지 않도록 제한 (오버플로 방지)
+     - dvh: 모바일 주소창 표시/숨김에 따라 변하는 실제 가시 영역 기준
+     - dvh 미지원 브라우저는 위의 vh 값으로 동작 */
+  max-height: calc(100vh - 12px);
+  max-height: calc(100dvh - 12px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 @keyframes slideUp {
   from { transform: translateY(24px); opacity: 0; }
@@ -723,6 +730,14 @@ button, input { outline: none; }
 }
 
 /* ---------- 반응형 ---------- */
+/* 세로 높이가 낮은 화면(가로 모드·소형 기기): 키패드를 축소해 뷰포트 안에 수납 */
+@media (max-height: 480px) {
+  .num-pad { padding-top: 8px; border-radius: 16px 16px 0 0; }
+  .num-pad-head { margin-bottom: 8px; }
+  .num-pad-keys { gap: 6px; }
+  .num-key { padding: 8px 0; font-size: 17px; }
+  .num-pad-done { padding: 6px 14px; font-size: 13px; }
+}
 @media (max-width: 380px) {
   .app-title { font-size: 22px; }
   .gen-display .main { font-size: 36px; }
