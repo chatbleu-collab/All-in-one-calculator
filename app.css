@@ -658,15 +658,17 @@ button, input { outline: none; }
 ============================================================ */
 .num-pad-overlay {
   position: fixed;
-  inset: 0;
+  inset: auto 0 0 0;        /* 화면 하단에만 고정 (전체 화면을 덮지 않음) */
   z-index: 100;
-  background: rgba(15, 23, 42, 0.45);
+  background: transparent;  /* 배경 어둡게 처리 제거 → 네이티브 키보드처럼 동작 */
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  pointer-events: none;     /* 키패드 좌우 여백은 터치가 아래 화면으로 통과 */
 }
 .num-pad-overlay[hidden] { display: none; }
 .num-pad {
+  pointer-events: auto;     /* 키패드 본체는 터치 가능 */
   width: 100%;
   max-width: 480px;
   background: #ffffff;
@@ -727,6 +729,13 @@ button, input { outline: none; }
   outline: 2px solid #6366f1;
   outline-offset: 1px;
   border-radius: 8px;
+}
+
+/* 키패드가 열려 있는 동안 본문 하단 여백 확보
+   (편집 중인 입력칸이 하단 고정 키패드에 가려지지 않도록 스크롤 공간 제공)
+   --numpad-h 값은 app.js가 실제 키패드 높이로 설정 */
+body.numpad-open .app {
+  padding-bottom: var(--numpad-h, 300px);
 }
 
 /* ---------- 반응형 ---------- */

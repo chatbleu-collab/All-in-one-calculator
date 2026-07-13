@@ -520,6 +520,7 @@ const AgeCalc = (function () {
 // ============================================================
 const NumPad = (function () {
   const overlay = document.getElementById("num-pad-overlay");
+  const padEl = overlay.querySelector(".num-pad"); // 하단 고정 키패드 본체
   const keysEl = document.getElementById("num-pad-keys");
   const labelEl = document.getElementById("num-pad-label");
   const doneBtn = document.getElementById("num-pad-done");
@@ -543,12 +544,18 @@ const NumPad = (function () {
     document.querySelectorAll(".numpad-active").forEach((el) => el.classList.remove("numpad-active"));
     input.classList.add("numpad-active");
     overlay.hidden = false;
+    // 하단 고정 키패드: 실제 키패드 높이만큼 본문 하단 여백을 확보한 뒤
+    // 편집 중인 입력칸이 키패드 위쪽에 보이도록 스크롤
+    document.body.classList.add("numpad-open");
+    document.documentElement.style.setProperty("--numpad-h", padEl.offsetHeight + "px");
+    input.scrollIntoView({ block: "center", behavior: "smooth" });
   }
 
   function close() {
     if (activeInput) activeInput.classList.remove("numpad-active");
     activeInput = null;
     overlay.hidden = true;
+    document.body.classList.remove("numpad-open"); // 하단 여백 해제
   }
 
   function emitInput(input) {
@@ -581,10 +588,15 @@ const NumPad = (function () {
     emitInput(activeInput);
   });
 
-  // 완료 버튼 / 배경 탭 → 닫기
+  // 완료 버튼 → 닫기
   doneBtn.addEventListener("click", close);
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) close();
+  // 키패드·대상 입력칸 바깥을 탭하면 닫기 (네이티브 키보드와 동일한 동작)
+  // 다른 대상 입력칸을 탭한 경우에는 닫지 않고 해당 칸으로 바로 전환됨
+  document.addEventListener("pointerdown", (e) => {
+    if (overlay.hidden) return;
+    if (e.target.closest(".num-pad")) return;
+    if (e.target.id && TARGETS[e.target.id]) return;
+    close();
   });
 
   return { open, close };
