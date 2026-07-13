@@ -5,7 +5,7 @@
 ============================================================ */
 
 // 캐시 이름 (버전을 올리면 사용자 브라우저에서 자동 갱신됩니다)
-const CACHE_NAME = "olinwon-calc-v1.3.0";
+const CACHE_NAME = "olinwon-calc-v1.4.0";
 
 // 캐시에 저장할 파일 목록 (상대경로: GitHub Pages 서브패스 대응)
 const ASSETS = [

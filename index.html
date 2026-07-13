@@ -191,13 +191,37 @@
             <button class="age-type-btn" data-type="real">만 나이</button>
           </div>
           <div class="age-input-box">
-            <input type="text" id="rev-age" inputmode="none" readonly>
+            <input type="text" id="rev-age" placeholder="예: 30" inputmode="none" readonly>
             <span class="suffix">세</span>
           </div>
           <div class="reverse-result">
             <span class="lbl" id="rev-birth-label">출생년도</span>
             <div class="val" id="rev-birth-year">-</div>
             <div class="zd" id="rev-zodiac">-</div>
+          </div>
+        </div>
+
+        <!-- 앱 전용 숫자 키패드 (환율 탭처럼 화면에 항상 고정 표시) -->
+        <div class="num-pad-inline" id="num-pad-overlay">
+          <div class="num-pad">
+            <div class="num-pad-head">
+              <span class="num-pad-label" id="num-pad-label">입력칸을 선택하세요</span>
+              <button class="num-pad-done" id="num-pad-done">완료</button>
+            </div>
+            <div class="num-pad-keys" id="num-pad-keys">
+              <button class="num-key" data-key="1">1</button>
+              <button class="num-key" data-key="2">2</button>
+              <button class="num-key" data-key="3">3</button>
+              <button class="num-key" data-key="4">4</button>
+              <button class="num-key" data-key="5">5</button>
+              <button class="num-key" data-key="6">6</button>
+              <button class="num-key" data-key="7">7</button>
+              <button class="num-key" data-key="8">8</button>
+              <button class="num-key" data-key="9">9</button>
+              <button class="num-key fn" data-key="C">C</button>
+              <button class="num-key" data-key="0">0</button>
+              <button class="num-key fn" data-key="BS" aria-label="한 칸 지우기">⌫</button>
+            </div>
           </div>
         </div>
 
@@ -376,33 +400,6 @@
 
   </div>
 
-
-  <!-- =========================================================
-       앱 전용 숫자 키패드 (나이 계산기 입력용 하단 시트)
-       - 기기 기본 키패드는 열리지 않으며 이 키패드로만 입력합니다.
-  ========================================================= -->
-  <div class="num-pad-overlay" id="num-pad-overlay" hidden>
-    <div class="num-pad" role="dialog" aria-label="숫자 키패드">
-      <div class="num-pad-head">
-        <span class="num-pad-label" id="num-pad-label">숫자 입력</span>
-        <button class="num-pad-done" id="num-pad-done">완료</button>
-      </div>
-      <div class="num-pad-keys" id="num-pad-keys">
-        <button class="num-key" data-key="1">1</button>
-        <button class="num-key" data-key="2">2</button>
-        <button class="num-key" data-key="3">3</button>
-        <button class="num-key" data-key="4">4</button>
-        <button class="num-key" data-key="5">5</button>
-        <button class="num-key" data-key="6">6</button>
-        <button class="num-key" data-key="7">7</button>
-        <button class="num-key" data-key="8">8</button>
-        <button class="num-key" data-key="9">9</button>
-        <button class="num-key fn" data-key="C">C</button>
-        <button class="num-key" data-key="0">0</button>
-        <button class="num-key fn" data-key="BS" aria-label="한 칸 지우기">⌫</button>
-      </div>
-    </div>
-  </div>
 
   <!-- 스크립트 로드 (모든 DOM 뒤) -->
   <script src="./app.js"></script>

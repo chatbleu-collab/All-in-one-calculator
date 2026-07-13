@@ -613,6 +613,7 @@ button, input { outline: none; }
 .age-input-box {
   display: flex;
   align-items: center;
+  justify-content: center; /* 나이 값 + '세'를 박스 가운데 배치 */
   background: #ffffff;
   border-radius: 12px;
   padding: 10px 16px;
@@ -620,7 +621,8 @@ button, input { outline: none; }
   gap: 8px;
 }
 .age-input-box input {
-  flex: 1;
+  flex: 0 1 140px;         /* 입력칸 폭 고정 → 숫자·placeholder가 정확히 가운데 */
+  min-width: 0;
   border: none;
   background: transparent;
   text-align: center;
@@ -654,39 +656,18 @@ button, input { outline: none; }
 }
 
 /* ============================================================
-   앱 전용 숫자 키패드 (나이 계산기 하단 시트)
+   앱 전용 숫자 키패드 (나이 탭 — 환율 탭처럼 본문에 항상 고정 표시)
+   - '나이로 출생년도 찾기' 카드 바로 아래에 위치합니다.
 ============================================================ */
-.num-pad-overlay {
-  position: fixed;
-  inset: auto 0 0 0;        /* 화면 하단에만 고정 (전체 화면을 덮지 않음) */
-  z-index: 100;
-  background: transparent;  /* 배경 어둡게 처리 제거 → 네이티브 키보드처럼 동작 */
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  pointer-events: none;     /* 키패드 좌우 여백은 터치가 아래 화면으로 통과 */
+.num-pad-inline {
+  margin-top: 14px;
 }
-.num-pad-overlay[hidden] { display: none; }
 .num-pad {
-  pointer-events: auto;     /* 키패드 본체는 터치 가능 */
   width: 100%;
-  max-width: 480px;
   background: #ffffff;
-  border-radius: 20px 20px 0 0;
-  padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
-  box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.18);
-  animation: slideUp 0.18s ease;
-  /* 뷰포트보다 커지지 않도록 제한 (오버플로 방지)
-     - dvh: 모바일 주소창 표시/숨김에 따라 변하는 실제 가시 영역 기준
-     - dvh 미지원 브라우저는 위의 vh 값으로 동작 */
-  max-height: calc(100vh - 12px);
-  max-height: calc(100dvh - 12px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-@keyframes slideUp {
-  from { transform: translateY(24px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
+  border-radius: 20px;
+  padding: 14px 16px 16px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
 }
 .num-pad-head {
   display: flex;
@@ -731,22 +712,7 @@ button, input { outline: none; }
   border-radius: 8px;
 }
 
-/* 키패드가 열려 있는 동안 본문 하단 여백 확보
-   (편집 중인 입력칸이 하단 고정 키패드에 가려지지 않도록 스크롤 공간 제공)
-   --numpad-h 값은 app.js가 실제 키패드 높이로 설정 */
-body.numpad-open .app {
-  padding-bottom: var(--numpad-h, 300px);
-}
-
 /* ---------- 반응형 ---------- */
-/* 세로 높이가 낮은 화면(가로 모드·소형 기기): 키패드를 축소해 뷰포트 안에 수납 */
-@media (max-height: 480px) {
-  .num-pad { padding-top: 8px; border-radius: 16px 16px 0 0; }
-  .num-pad-head { margin-bottom: 8px; }
-  .num-pad-keys { gap: 6px; }
-  .num-key { padding: 8px 0; font-size: 17px; }
-  .num-pad-done { padding: 6px 14px; font-size: 13px; }
-}
 @media (max-width: 380px) {
   .app-title { font-size: 22px; }
   .gen-display .main { font-size: 36px; }
