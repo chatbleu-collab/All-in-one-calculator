@@ -1,0 +1,121 @@
+From 9554d76e5c2700103fd10e530a09b99eb6bf1145 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Wed, 15 Jul 2026 04:31:40 +0000
+Subject: [PATCH] =?UTF-8?q?=EB=82=98=EC=9D=B4=20=EA=B3=84=EC=82=B0?=
+ =?UTF-8?q?=EA=B8=B0:=20=EC=9E=85=EB=A0=A5=20=EC=A4=91=20=EC=88=AB?=
+ =?UTF-8?q?=EC=9E=90=ED=8C=A8=EB=93=9C=EB=A5=BC=20=ED=99=94=EB=A9=B4=20?=
+ =?UTF-8?q?=ED=95=98=EB=8B=A8=EC=97=90=20=EA=B3=A0=EC=A0=95=ED=95=B4=20?=
+ =?UTF-8?q?=ED=95=9C=20=ED=99=94=EB=A9=B4=EC=97=90=20=ED=91=9C=EC=8B=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- 입력칸을 선택하면 숫자패드가 화면 하단에 고정(floating)되어
+  기준일 년 등 위쪽 입력칸과 키패드가 한 화면에 함께 보이도록 개선
+- 스크롤 위치를 키패드 위 남은 영역 기준으로 계산해 입력칸이
+  키패드에 가려지지 않도록 처리
+- 완료/바깥 탭 시 키패드는 기존처럼 본문 하단 위치로 복귀
+- 세로 공간이 좁은 화면(가로 모드)에서는 키패드를 컴팩트하게 축소
+- 서비스워커 캐시 버전 v1.4.1로 갱신하여 업데이트 반영
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01CX7nbGdzTVB2oVsGuUBuXA
+---
+ app.css | 25 +++++++++++++++++++++++++
+ app.js  | 17 ++++++++++++++---
+ sw.js   |  2 +-
+ 3 files changed, 40 insertions(+), 4 deletions(-)
+
+diff --git a/app.css b/app.css
+index 5fb4c61..c8ded4c 100644
+--- a/app.css
++++ b/app.css
+@@ -662,6 +662,31 @@ button, input { outline: none; }
+ .num-pad-inline {
+   margin-top: 14px;
+ }
++/* 입력칸 선택 중: 키패드를 화면 하단에 고정해 입력칸과 한 화면에 함께 표시 */
++.num-pad-inline.floating {
++  position: fixed;
++  left: 0;
++  right: 0;
++  bottom: 0;
++  margin: 0;
++  padding: 0 12px calc(10px + env(safe-area-inset-bottom, 0px));
++  z-index: 100;
++}
++.num-pad-inline.floating .num-pad {
++  max-width: 688px;
++  margin: 0 auto;
++  box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.25);
++}
++.num-pad-inline.floating .num-key { padding: 12px 0; }
++/* 하단 고정 키패드가 본문을 가리지 않도록 스크롤 여백 확보 */
++body.numpad-open .calc-age { padding-bottom: 300px; }
++/* 세로 공간이 좁은 화면(가로 모드 등)에서는 키패드를 더 컴팩트하게 */
++@media (max-height: 520px) {
++  .num-pad-inline.floating .num-pad { padding: 8px 14px 10px; }
++  .num-pad-inline.floating .num-pad-head { margin-bottom: 6px; }
++  .num-pad-inline.floating .num-pad-keys { gap: 6px; }
++  .num-pad-inline.floating .num-key { padding: 6px 0; font-size: 17px; }
++}
+ .num-pad {
+   width: 100%;
+   background: #ffffff;
+diff --git a/app.js b/app.js
+index dab6491..7aa7080 100644
+--- a/app.js
++++ b/app.js
+@@ -521,7 +521,6 @@ const AgeCalc = (function () {
+ // ============================================================
+ const NumPad = (function () {
+   const overlay = document.getElementById("num-pad-overlay");
+-  const padEl = overlay.querySelector(".num-pad"); // 키패드 본체
+   const keysEl = document.getElementById("num-pad-keys");
+   const labelEl = document.getElementById("num-pad-label");
+   const doneBtn = document.getElementById("num-pad-done");
+@@ -545,14 +544,26 @@ const NumPad = (function () {
+     labelEl.textContent = TARGETS[input.id].label;
+     document.querySelectorAll(".numpad-active").forEach((el) => el.classList.remove("numpad-active"));
+     input.classList.add("numpad-active");
+-    // 키패드가 화면 밖에 있으면 보이도록 최소한으로만 스크롤
+-    padEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
++    // 키패드를 화면 하단에 고정해 입력칸과 한 화면에 함께 보이게 함
++    overlay.classList.add("floating");
++    document.body.classList.add("numpad-open");
++    // 입력칸이 키패드에 가려지지 않도록, 키패드 위 남은 영역의 가운데로 스크롤
++    requestAnimationFrame(() => {
++      const padTop = overlay.getBoundingClientRect().top;
++      const visibleH = padTop > 0 ? padTop : window.innerHeight;
++      const r = input.getBoundingClientRect();
++      const target = window.scrollY + r.top - Math.max(0, (visibleH - r.height) / 2);
++      window.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
++    });
+   }
+ 
+   function close() {
+     if (activeInput) activeInput.classList.remove("numpad-active");
+     activeInput = null;
+     labelEl.textContent = DEFAULT_LABEL; // 선택 해제 상태 표시
++    // 키패드를 원래 위치(본문 하단)로 되돌림
++    overlay.classList.remove("floating");
++    document.body.classList.remove("numpad-open");
+   }
+ 
+   function emitInput(input) {
+diff --git a/sw.js b/sw.js
+index 2515b8d..9a03874 100644
+--- a/sw.js
++++ b/sw.js
+@@ -5,7 +5,7 @@
+ ============================================================ */
+ 
+ // 캐시 이름 (버전을 올리면 사용자 브라우저에서 자동 갱신됩니다)
+-const CACHE_NAME = "olinwon-calc-v1.4.0";
++const CACHE_NAME = "olinwon-calc-v1.4.1";
+ 
+ // 캐시에 저장할 파일 목록 (상대경로: GitHub Pages 서브패스 대응)
+ const ASSETS = [
+-- 
+2.43.0
+
