@@ -446,14 +446,14 @@ button, input { outline: none; }
 /* ============================================================
    [4] 나이 계산기
 ============================================================ */
-.calc-age { display: flex; flex-direction: column; gap: 14px; }
+.calc-age { display: flex; flex-direction: column; gap: 8px; }
 
 .age-head { text-align: center; }
 .age-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   background: linear-gradient(90deg, #a78bfa, #f472b6);
   color: #ffffff;
   border-radius: 999px;
@@ -461,12 +461,12 @@ button, input { outline: none; }
   font-weight: 700;
   letter-spacing: 0.5px;
 }
-.age-title { font-size: 24px; font-weight: 800; color: #0f172a; margin: 8px 0 4px; }
-.age-desc { font-size: 12px; color: #6b7280; margin: 0; }
+.age-title { font-size: 18px; font-weight: 800; color: #0f172a; margin: 4px 0 2px; }
+.age-desc { font-size: 11px; color: #6b7280; margin: 0; }
 
 .age-card {
   border-radius: 18px;
-  padding: 16px 18px;
+  padding: 10px 14px;
 }
 .age-card.blue { background: linear-gradient(180deg, #eef2ff, #dbeafe); }
 .age-card.green { background: linear-gradient(180deg, #ecfdf5, #d1fae5); }
@@ -474,20 +474,20 @@ button, input { outline: none; }
 
 .age-card .card-label {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 .age-card.blue .card-label { background: #3b82f6; }
 .age-card.green .card-label { background: #10b981; }
 .age-card.purple .card-label { background: #8b5cf6; }
 
-.era-toggle { display: inline-flex; gap: 6px; margin-bottom: 12px; }
+.era-toggle { display: inline-flex; gap: 6px; margin-bottom: 6px; }
 .era-btn {
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
   background: #ffffff;
   color: #6b7280;
@@ -500,29 +500,29 @@ button, input { outline: none; }
 .date-inputs {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 }
 .date-inputs .di {
   background: #ffffff;
   border-radius: 12px;
-  padding: 10px;
+  padding: 6px;
   text-align: center;
 }
 .date-inputs .di small {
   display: block;
   color: #6b7280;
   font-size: 11px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .date-inputs .di input {
   width: 100%;
   border: none;
   background: transparent;
   text-align: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 800;
   color: #1e40af;
-  padding: 4px 0;
+  padding: 2px 0;
   -moz-appearance: textfield;
 }
 .date-inputs .di input::-webkit-outer-spin-button,
@@ -534,16 +534,16 @@ button, input { outline: none; }
 
 .date-summary {
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   color: #6b7280;
-  margin-top: 10px;
+  margin-top: 6px;
 }
 
 .result-card {
   background: linear-gradient(135deg, #fb923c, #f97316, #ef4444);
   color: #ffffff;
   border-radius: 20px;
-  padding: 18px;
+  padding: 12px 14px;
   box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);
 }
 .result-card .card-label {
@@ -554,7 +554,7 @@ button, input { outline: none; }
   font-size: 12px;
   font-weight: 700;
   display: inline-block;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .result-grid {
   display: grid;
@@ -564,7 +564,7 @@ button, input { outline: none; }
 .result-grid .cell {
   background: rgba(255, 255, 255, 0.18);
   border-radius: 14px;
-  padding: 12px 8px;
+  padding: 8px 6px;
   text-align: center;
   backdrop-filter: blur(4px);
 }
@@ -576,7 +576,7 @@ button, input { outline: none; }
   margin-bottom: 4px;
 }
 .result-grid .cell .val {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   line-height: 1.1;
   margin: 2px 0;
@@ -587,20 +587,20 @@ button, input { outline: none; }
   display: block;
 }
 .result-grid .cell .zodiac-emoji {
-  font-size: 26px;
+  font-size: 20px;
   line-height: 1;
   margin-bottom: 2px;
 }
 
-.reverse-card { padding: 18px; }
+.reverse-card { padding: 12px 14px; }
 .reverse-card .card-label {
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
-.age-type-toggle { display: inline-flex; gap: 6px; margin-bottom: 12px; }
+.age-type-toggle { display: inline-flex; gap: 6px; margin-bottom: 6px; }
 .age-type-btn {
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
   background: #ffffff;
   color: #6b7280;
@@ -616,8 +616,8 @@ button, input { outline: none; }
   justify-content: center; /* 나이 값 + '세'를 박스 가운데 배치 */
   background: #ffffff;
   border-radius: 12px;
-  padding: 10px 16px;
-  margin-bottom: 10px;
+  padding: 6px 12px;
+  margin-bottom: 6px;
   gap: 8px;
 }
 .age-input-box input {
@@ -626,10 +626,10 @@ button, input { outline: none; }
   border: none;
   background: transparent;
   text-align: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 800;
   color: #6d28d9;
-  padding: 6px 0;
+  padding: 2px 0;
   -moz-appearance: textfield;
 }
 .age-input-box input::-webkit-outer-spin-button,
@@ -641,18 +641,18 @@ button, input { outline: none; }
 .reverse-result {
   background: #ffffff;
   border-radius: 12px;
-  padding: 14px;
+  padding: 8px;
   text-align: center;
 }
 .reverse-result .lbl { display: block; font-size: 11px; color: #6b7280; margin-bottom: 2px; }
-.reverse-result .val { font-size: 26px; font-weight: 800; color: #6d28d9; }
+.reverse-result .val { font-size: 20px; font-weight: 800; color: #6d28d9; }
 .reverse-result .zd { font-size: 12px; color: #6b7280; margin-top: 2px; }
 
 .age-note {
   text-align: center;
   font-size: 11px;
   color: #6b7280;
-  margin: 6px 0 0;
+  margin: 2px 0 0;
 }
 
 /* ============================================================
@@ -660,20 +660,20 @@ button, input { outline: none; }
    - '나이로 출생년도 찾기' 카드 바로 아래에 위치합니다.
 ============================================================ */
 .num-pad-inline {
-  margin-top: 14px;
+  margin-top: 0;
 }
 .num-pad {
   width: 100%;
   background: #ffffff;
   border-radius: 20px;
-  padding: 14px 16px 16px;
+  padding: 10px 12px 12px;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
 }
 .num-pad-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .num-pad-label {
   font-size: 14px;
@@ -681,7 +681,7 @@ button, input { outline: none; }
   color: #64748b;
 }
 .num-pad-done {
-  padding: 8px 18px;
+  padding: 6px 14px;
   font-size: 14px;
   font-weight: 700;
   border-radius: 10px;
@@ -691,11 +691,11 @@ button, input { outline: none; }
 .num-pad-keys {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 .num-key {
-  padding: 14px 0;
-  font-size: 20px;
+  padding: 9px 0;
+  font-size: 18px;
   font-weight: 600;
   border-radius: 12px;
   background: #f8fafc;
